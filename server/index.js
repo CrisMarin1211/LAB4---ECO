@@ -6,46 +6,60 @@ app.use(express.json());
 app.use(cors());
 
 const db = {
-	players: [], // Aquí guardaremos los usuarios registrados
-	posts: [], // Aquí guardaremos los posts
+	players: [],
+	posts: [],
 };
 
-// Endpoint para obtener todos los usuarios
+// Ruta para obtener todos los usuarios
 app.get('/users', (request, response) => {
 	response.send(db.players);
 });
 
-// Endpoint para registrar un nuevo usuario
+// Ruta para registrar un usuario
 app.post('/user', (request, response) => {
 	const { body } = request;
+	const { username } = body;
+
+	// Verificar si el nombre de usuario ya existe en la base de datos
+	const existingUser = db.players.find((player) => player.username === username);
+	if (existingUser) {
+		// Si el nombre de usuario ya está en uso, enviar un error
+		return response.status(409).send({ message: 'Username already exists' });
+	}
+
+	// Si no existe, agregar el usuario a la base de datos
 	db.players.push(body);
 	response.status(201).send(body);
 });
 
-// Endpoint para hacer login
-app.post('/login', (request, response) => {
-	const { user, password } = request.body;
-	const foundUser = db.players.find((player) => player.user === user && player.password === password);
-	if (foundUser) {
-		response.status(200).send({ message: 'Login exitoso' });
-	} else {
-		response.status(401).send({ message: 'Credenciales incorrectas' });
-	}
+// Ruta para crear un post
+app.post('/post', (request, response) => {
+	const { body } = request;
+	db.posts.push(body);
+	response.status(201).send(body);
 });
 
-// Endpoint para crear un post
-app.post('/create-post', (request, response) => {
-	const { user, title, description, urlImage } = request.body;
-	const newPost = { user, title, description, urlImage };
-	db.posts.push(newPost);
-	response.status(201).send(newPost);
-});
-
-// Endpoint para obtener todos los posts
+// Ruta para obtener todos los posts
 app.get('/posts', (request, response) => {
 	response.send(db.posts);
 });
 
 app.listen(5050, () => {
 	console.log(`Server is running on http://localhost:${5050}`);
+});
+
+// Ruta para manejar el login
+app.post('/login', (request, response) => {
+	const { username, password } = request.body;
+
+	// Buscar el usuario en la base de datos
+	const user = db.players.find((u) => u.username === username && u.password === password);
+
+	if (user) {
+		// Si se encuentra el usuario, responder con éxito
+		response.status(200).send({ user: { username: user.username, name: user.name } });
+	} else {
+		// Si no se encuentra el usuario o la contraseña no coincide, responder con error
+		response.status(401).send({ message: 'Invalid username or password' });
+	}
 });

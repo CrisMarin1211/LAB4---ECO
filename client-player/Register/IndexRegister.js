@@ -1,31 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-	const formRegister = document.getElementById('form-register');
-	formRegister.addEventListener('submit', async (event) => {
+	const formRegister = document.getElementById('register-form');
+	formRegister.addEventListener('submit', (event) => {
 		event.preventDefault();
-		const name = document.getElementById('rname').value;
-		const email = document.getElementById('remail').value;
-		const password = document.getElementById('rpassword').value;
-		try {
-			const response = await fetch('http://localhost:5050/register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ name, email, password }),
-			});
-			if (!response.ok) {
-				throw new Error(response.statusText);
-			}
-			const data = await response.json();
-			// localStorage.setItem('token', data.token);
-			localStorage.setItem('name', data.name);
-			alert(data.message);
+
+		const username = document.getElementById('username').value;
+		const email = document.getElementById('email').value;
+		const password = document.getElementById('password').value;
+
+		// Simulación del proceso de registro
+		const users = JSON.parse(localStorage.getItem('users')) || [];
+
+		// Comprobar si el usuario ya existe
+		const userExists = users.some((user) => user.email === email);
+
+		if (userExists) {
+			alert('El correo electrónico ya está registrado.');
+		} else {
+			// Guardar nuevo usuario
+			users.push({ username, email, password });
+			localStorage.setItem('users', JSON.stringify(users));
+
+			alert('Registro exitoso');
 			formRegister.reset();
 			window.location.href = '../index.html';
-			// console.log(localStorage.getItem('token'));
-		} catch (error) {
-			alert(error.message);
-			console.error(error);
 		}
 	});
 });

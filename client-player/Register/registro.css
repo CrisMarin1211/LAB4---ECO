@@ -102,3 +102,27 @@ button.btn:hover {
 	transform: translateY(-2px);
 	transition: all 0.3s ease;
 }
+
+.home-buttons .btn-home {
+	background-color: #d2064e; /* Fondo transparente */
+	color: #ffffff; /* Color blanco para el texto */
+	padding: 5px 10px;
+	border: 1px solid #d2064e; /* Borde con el color principal */
+	border-radius: 5px;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.home-buttons .btn.home:hover {
+	background-color: #d2064e;
+	color: #ffffff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	transform: translateY(-2px);
+	transition: all 0.3s ease;
+}
+
+.home-buttons .btn.home:focus {
+	outline: none;
+}
