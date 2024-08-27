@@ -51,6 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		alert('Post creado con éxito');
 
 		// Redirigir a la pantalla principal o limpiar el formulario
-		window.location.href = 'index.html';
+		window.location.href = './IndexCreate.html';
 	});
 });
