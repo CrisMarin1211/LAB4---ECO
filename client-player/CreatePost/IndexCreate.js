@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	createPostButton.addEventListener('click', () => {
 		console.log('Botón de Crear Post fue clicado');
 
+		// Simular un inicio de sesión si no hay usuario guardado
+		if (!localStorage.getItem('name')) {
+			localStorage.setItem('name', 'usuarioEjemplo'); // Simulación de inicio de sesión
+			console.log('Usuario simulado guardado en localStorage.');
+		}
+
 		// Obtener los valores del formulario
 		const user = localStorage.getItem('name'); // Nombre de usuario guardado durante el login
 		const title = document.querySelector('#title').value;
@@ -45,6 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		alert('Post creado con éxito');
 
 		// Redirigir a la pantalla principal o limpiar el formulario
-		window.location.href = 'main.html'; // Cambia la ruta si es necesario
+		window.location.href = 'index.html';
 	});
 });
